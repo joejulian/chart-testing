@@ -53,8 +53,8 @@ dockers:
     use: buildx
     dockerfile: Dockerfile
     image_templates:
-      - quay.io/helmpack/chart-testing:{{ .Tag }}-amd64
-      - quay.io/helmpack/chart-testing:latest-amd64
+      - joejulian/chart-testing:{{ .Tag }}-amd64
+      - joejulian/chart-testing:latest-amd64
     build_flag_templates:
       - --platform=linux/amd64
       - --label=org.opencontainers.image.version={{ .Version }}
@@ -74,8 +74,8 @@ dockers:
     use: buildx
     dockerfile: Dockerfile
     image_templates:
-      - quay.io/helmpack/chart-testing:{{ .Tag }}-arm64
-      - quay.io/helmpack/chart-testing:latest-arm64
+      - joejulian/chart-testing:{{ .Tag }}-arm64
+      - joejulian/chart-testing:latest-arm64
     build_flag_templates:
       - --platform=linux/arm64
       - --label=org.opencontainers.image.version={{ .Version }}
@@ -92,25 +92,25 @@ dockers:
       - etc/lintconf.yaml
 
 docker_manifests:
-- name_template: quay.io/helmpack/chart-testing:latest
+- name_template: joejulian/chart-testing:latest
   image_templates:
-  - quay.io/helmpack/chart-testing:latest-amd64
-  - quay.io/helmpack/chart-testing:latest-arm64
-- name_template: quay.io/helmpack/chart-testing:{{ .Tag }}
+  - joejulian/chart-testing:latest-amd64
+  - joejulian/chart-testing:latest-arm64
+- name_template: joejulian/chart-testing:{{ .Tag }}
   image_templates:
-  - quay.io/helmpack/chart-testing:{{ .Tag }}-amd64
-  - quay.io/helmpack/chart-testing:{{ .Tag }}-arm64
+  - joejulian/chart-testing:{{ .Tag }}-amd64
+  - joejulian/chart-testing:{{ .Tag }}-arm64
 
 signs:
   - id: all
     signature: "${artifact}.sig"
     certificate: "${artifact}.pem"
     cmd: cosign
-    args: ["sign-blob", "--output-signature", "${artifact}.sig", "--output-certificate", "${artifact}.pem", "${artifact}"]
+    args: ["sign-blob", "--key", "/home/jjulian/.local/lib/cosign/cosign.key", "--output-signature", "${artifact}.sig", "--output-certificate", "${artifact}.pem", "${artifact}"]
     artifacts: all
 
 docker_signs:
   - id: images
     cmd: cosign
-    args: ["sign", "${artifact}"]
+    args: ["sign", "--key", "/home/jjulian/.local/lib/cosign/cosign.key", "${artifact}"]
     artifacts: manifests
