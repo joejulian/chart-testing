@@ -89,7 +89,7 @@ type Helm interface {
 	BuildDependenciesWithArgs(chart string, extraArgs []string) error
 	LintWithValues(chart string, valuesFile string) error
 	InstallWithValues(chart string, valuesFile string, namespace string, release string) error
-	Upgrade(chart string, namespace string, release string) error
+	Upgrade(chart string, valuesFile string, namespace string, release string) error
 	Test(namespace string, release string) error
 	DeleteRelease(namespace string, release string)
 	Version() (string, error)
@@ -634,7 +634,7 @@ func (t *Testing) doUpgrade(oldChart, newChart *Chart, oldChartMustPass bool) er
 				return nil
 			}
 
-			if err := t.helm.Upgrade(newChart.Path(), namespace, release); err != nil {
+			if err := t.helm.Upgrade(newChart.Path(), valuesFile, namespace, release); err != nil {
 				return err
 			}
 
