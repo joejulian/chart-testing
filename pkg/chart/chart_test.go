@@ -106,7 +106,7 @@ func (h *fakeHelm) LintWithValues(chart string, valuesFile string) error { retur
 func (h *fakeHelm) InstallWithValues(chart string, valuesFile string, namespace string, release string) error {
 	return nil
 }
-func (h *fakeHelm) Upgrade(chart string, namespace string, release string) error {
+func (h *fakeHelm) Upgrade(chart string, valuesFile string, namespace string, release string) error {
 	return nil
 }
 func (h *fakeHelm) Test(namespace string, release string) error {

@@ -69,9 +69,14 @@ func (h Helm) InstallWithValues(chart string, valuesFile string, namespace strin
 	return nil
 }
 
-func (h Helm) Upgrade(chart string, namespace string, release string) error {
+func (h Helm) Upgrade(chart string, valuesFile string, namespace string, release string) error {
+	var values []string
+	if valuesFile != "" {
+		values = []string{"--values", valuesFile}
+	}
+
 	if err := h.exec.RunProcess("helm", "upgrade", release, chart, "--namespace", namespace,
-		"--wait", h.extraArgs, h.extraSetArgs); err != nil {
+		"--wait", values, h.extraArgs, h.extraSetArgs); err != nil {
 		return err
 	}
 
