@@ -104,7 +104,6 @@ docker_manifests:
 signs:
   - id: all
     signature: "${artifact}.sig"
-    certificate: "${artifact}.pem"
     cmd: cosign
     args: ["sign-blob", "--key", "/home/jjulian/.local/lib/cosign/cosign.key", "--output-signature", "${artifact}.sig", "--output-certificate", "${artifact}.pem", "${artifact}"]
     artifacts: all
