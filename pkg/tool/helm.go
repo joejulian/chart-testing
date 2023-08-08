@@ -71,10 +71,10 @@ func (h Helm) Upgrade(chart string, valuesFile string, namespace string, release
 		values = []string{"--values", valuesFile}
 	}
 
-    if err := h.exec.RunProcess("helm", "upgrade", release, chart, "--namespace", namespace,
-            "--reuse-values", "--wait", values, h.extraArgs, h.extraSetArgs); err != nil {
-        return err
-    }
+	if err := h.exec.RunProcess("helm", "upgrade", release, chart, "--namespace", namespace,
+		"--wait", values, h.extraArgs, h.extraSetArgs); err != nil {
+		return err
+	}
 
 	return nil
 }
